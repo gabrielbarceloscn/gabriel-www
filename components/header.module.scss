@@ -1,0 +1,53 @@
+.header {
+  position: fixed;
+  top: -1px;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  background-color: var(--headerBg);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+
+.links {
+  display: flex;
+  margin-right: 0;
+  margin-bottom: 0;
+  padding: 0;
+  font-weight: 700;
+  font-size: 14px;
+  list-style: none;
+
+  @media (min-width: 370px) {
+    font-size: 17px;
+  }
+}
+
+.link {
+  margin-right: 25px;
+  padding: 4px 0;
+  opacity: 0.6;
+
+  &:hover,
+  &:focus {
+    opacity: 1;
+  }
+
+  @media (min-width: 480px) {
+    margin-right: 35px;
+  }
+
+  @media (min-width: 768px) {
+    margin-right: 75px;
+    margin-left: 0;
+  }
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+}
+
+.linkActive {
+  composes: link;
+  box-shadow: 0 2px 0 var(--chakra-colors-brand-500);
+  opacity: 1;
+}

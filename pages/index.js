@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import Footer from "../components/footer";
-import {Avatar, Box, Container, HStack, Text} from "@chakra-ui/react";
-import Navbar from "../components/navbar";
+import {Avatar, Box, Container, Heading, HStack, Text} from "@chakra-ui/react";
+import Header from "../components/header";
 
 export default function Home() {
     return (
@@ -14,7 +14,8 @@ export default function Home() {
                     <link rel="icon" href="/favicon.png"/>
                 </Head>
 
-                <Navbar/>
+                <Header/>
+
 
                 <main>
 
