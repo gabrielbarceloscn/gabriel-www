@@ -32,7 +32,7 @@ const Header = (props) => {
                             {links.map((obj, idx) =>
                                 (
                                     <li key={idx} className={pathname === obj.path ? styles.linkActive : styles.link}>
-                                        <Link href={obj.path} color={"brand.900"}>{obj.name}</Link>
+                                        <Link href={obj.path}>{obj.name}</Link>
                                     </li>
                                 ))}
                         </ul>

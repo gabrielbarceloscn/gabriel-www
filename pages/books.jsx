@@ -1,12 +1,13 @@
 import Header from "../components/header";
+import Page from "../components/page";
 
 const Books = (props) => {
 
     return (
-        <>
-            <Header/>
+        <Page>
+
             texto
-        </>
+        </Page>
     )
 }
 

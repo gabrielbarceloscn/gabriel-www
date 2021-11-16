@@ -1,11 +1,11 @@
 import Header from "../components/header";
+import Page from "../components/page";
 
 const Stack = (props) => {
     return (
-        <>
-            <Header/>
+        <Page>
             Stack
-        </>
+        </Page>
     )
 }
 

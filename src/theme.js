@@ -8,16 +8,6 @@ and used hypertheme to create color variations.
  */
 const customTheme = extendTheme(
     {
-        styles: {
-            global: {
-                a: {
-                    color: "teal.500",
-                    _hover: {
-                        textDecoration: "none"
-                    }
-                }
-            },
-        },
         colors: {
             brand: {
                 "50": "#fbfaf1",
@@ -29,7 +19,33 @@ const customTheme = extendTheme(
                 "600": "#cdbf3a",
                 "700": "#bdb030",
                 "800": "#a99d2b",
-                // "900": "#807721"
+                "900": "#807721"
+            }
+        },
+        styles: {
+            global: {
+                // styles for the `body`
+                // body: {
+                //     bg: "gray.400",
+                //     color: "white",
+                // },
+                // styles for the `a`
+                // a: {
+                //     color: "yellow.500",
+                //     _hover: {
+                //         textDecoration: "none",
+                //     },
+                // },
+            },
+        },
+        components: {
+            Link: {
+                baseStyle: {
+                    color: "inherit",
+                    _hover: {
+                        textDecoration: "none",
+                    },
+                }
             }
         },
         fonts: {
