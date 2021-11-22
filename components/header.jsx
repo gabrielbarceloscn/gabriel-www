@@ -1,10 +1,11 @@
-import {Avatar, Box, Container, Flex, HStack, Link, LinkOverlay, Text} from "@chakra-ui/react";
+import {Avatar, Box, Container, Flex, HStack, Link, LinkOverlay, Text,
+useColorModeValue as mode} from "@chakra-ui/react";
 import styles from './header.module.scss';
 import Spacer from "./spacer";
 import {useRouter} from "next/router";
 
 const links = [
-    {name: 'Posts', path: '/'},
+    {name: 'Posts', path: '/blog'},
     {name: 'Leitura', path: '/books'},
     {name: 'Stack', path: '/stack'},
     {name: 'Favoritos', path: '/bookmarks'}
@@ -16,8 +17,8 @@ const Header = (props) => {
 
     return (
         <>
-            <Box as={"header"} className={styles.header}>
-                <Flex as={Container} justifyContent={"space-between"}
+            <Box as={"header"}  className={styles.header}>
+                <Flex as={Container} maxW={"container.md"} justifyContent={"space-between"}
                       alignItems={"center"} m={"0 auto"}
                       p={{base: "10px 15px", md: "20px 30px"}}
                 >

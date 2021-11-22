@@ -4,13 +4,14 @@ import PageTransition from "./page-transition";
 import styles from "./page.module.scss";
 
 const footerLinks = [
-    {name: 'Início', url: '/', isExternal: false}
+    {name: 'Início', url: '/', isExternal: false},
+    {name: 'Instagram', url: 'https://instagram.com/gabrielbarceloscn', isExternal: true},
 ]
 
 const Page = ({children}) => {
 
     return (
-        <Container>
+        <Container maxW={"container.md"}>
             <Header/>
 
             <chakra.main mb={{base: '50px', sm: '80px'}}>
@@ -26,6 +27,8 @@ const Page = ({children}) => {
                         </li>
                     ))}
                 </ul>
+                {/*<NowPlaying />*/}
+                <p className={styles.copyright}>&copy; Gabriel Barcelos {new Date().getFullYear()}</p>
             </footer>
         </Container>
     )
