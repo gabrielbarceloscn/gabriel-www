@@ -30,7 +30,7 @@ const colors = {
 const customTheme = extendTheme(
     {
         config: {
-            initialColorMode: 'light',
+            initialColorMode: 'system',
             useSystemColorMode: false,
         },
         colors: {...colors},
@@ -44,25 +44,19 @@ const customTheme = extendTheme(
             global: ({colorMode}) => ({
                 ":root": {
                     "--headerBg": colorMode === "light" ? "rgba(255, 255, 255, 0.6)": "rgba(22, 21, 21, 0.6)",
+                    "--boxBg": colorMode === "light" ? "#f3f3f3": "#1f1e1d",
                 },
                 // styles for the `body`
                 body: {
                     bg: colorMode === "light" ? "template.bgLight" : "template.bgDark",
                     color: colorMode === "light" ? "template.textLight" : "template.textDark",
                 },
-                // styles for the `a`
-                a: {
-                    color: "red",
-                    _hover: {
-                        textDecoration: "none",
-                    },
-                }
             }),
         },
         components: {
             Link: {
                 baseStyle: ({colorMode}) => ({
-                    color: colorMode === "light" ? "#000" : "brand.300",
+                    color: colorMode === "light" ? "brand.800" : "brand.300",
                     _hover: {
                         textDecoration: "none",
                     },

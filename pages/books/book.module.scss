@@ -1,0 +1,22 @@
+.cover {
+  border-radius: 8px;
+}
+
+.metaList {
+  margin-bottom: 20px;
+  dt {
+    position: relative;
+    top: 6px;
+    float: left;
+    clear: left;
+    font-size: 14px;
+    opacity: 0.8;
+  }
+
+  dd {
+    margin-bottom: 8px;
+    margin-left: 150px;
+    padding: 5px;
+    font-size: 15px;
+  }
+}

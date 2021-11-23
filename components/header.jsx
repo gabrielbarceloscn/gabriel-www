@@ -1,5 +1,7 @@
-import {Avatar, Box, Container, Flex, HStack, Link, LinkOverlay, Text,
-useColorModeValue as mode} from "@chakra-ui/react";
+import {
+    Avatar, Box, Container, Flex, HStack, Link, LinkOverlay, Text, useColorMode,
+    useColorModeValue as mode
+} from "@chakra-ui/react";
 import styles from './header.module.scss';
 import Spacer from "./spacer";
 import {useRouter} from "next/router";
@@ -14,6 +16,9 @@ const links = [
 const Header = (props) => {
     const router = useRouter();
     const pathname = router.pathname.split('/[')[0] // active paths on dynamic subpages
+
+    const { colorMode } = useColorMode();
+    const linkColor = colorMode === "light"? "#000" : "brand.100";
 
     return (
         <>
@@ -33,7 +38,7 @@ const Header = (props) => {
                             {links.map((obj, idx) =>
                                 (
                                     <li key={idx} className={pathname === obj.path ? styles.linkActive : styles.link}>
-                                        <Link href={obj.path}>{obj.name}</Link>
+                                        <Link color={linkColor} href={obj.path}>{obj.name}</Link>
                                     </li>
                                 ))}
                         </ul>
