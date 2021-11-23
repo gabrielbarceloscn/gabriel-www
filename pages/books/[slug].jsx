@@ -7,7 +7,7 @@ import {useRouter} from "next/router";
 import {Box, Button, Flex, Heading, Link, Tag, Text, useColorMode} from "@chakra-ui/react";
 import Image from "next/image";
 import styles from "./book.module.scss";
-import {Link2} from "react-feather";
+import {HiLink} from "react-icons/hi";
 import {NotionBlockRender} from "../../components/notion-block-render";
 
 const Book = ({meta, blocks}) => {
@@ -66,7 +66,7 @@ const Book = ({meta, blocks}) => {
                         <Link href={link} fontSize={"14px"} isExternal={true} display={"inline-flex"}>
                             Comprar o Livro
                             <Box ml={2}>
-                                <Link2/>
+                                <HiLink/>
                             </Box>
                         </Link>
                     )}

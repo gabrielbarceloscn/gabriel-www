@@ -45,6 +45,7 @@ const customTheme = extendTheme(
                 ":root": {
                     "--headerBg": colorMode === "light" ? "rgba(255, 255, 255, 0.6)": "rgba(22, 21, 21, 0.6)",
                     "--boxBg": colorMode === "light" ? "#f3f3f3": "#1f1e1d",
+                    "--border": colorMode === "light"? "rgba(0, 0, 0, 0.08)" : "rgba(255, 255, 255, 0.08)",
                 },
                 // styles for the `body`
                 body: {

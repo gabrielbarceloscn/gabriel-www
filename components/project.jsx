@@ -1,7 +1,7 @@
 import {Box, Flex, Heading, Link, Text, useBreakpointValue} from "@chakra-ui/react";
 import Image from "next/image";
 import styles from "./project.module.scss";
-import {Link2} from "react-feather";
+import {HiLink} from "react-icons/hi";
 
 const Project = ({title, description, link, image, linkText, priority}) => {
 
@@ -42,7 +42,7 @@ const Project = ({title, description, link, image, linkText, priority}) => {
             >
                 Visitar caldasnovas.app
                 <Box ml={"10px"}>
-                    <Link2/>
+                    <HiLink/>
                 </Box>
             </Link>
         </Box>
