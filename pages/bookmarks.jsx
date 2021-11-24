@@ -1,7 +1,6 @@
-import Header from "../components/header";
 import Page from "../components/page";
 import PageHeader from "../components/page-header";
-import {Box, Divider, Heading, Image, Link, SimpleGrid, Skeleton, Tag, Text} from "@chakra-ui/react";
+import {Box, Divider, Heading, Image, Link, SimpleGrid, Skeleton, Tag, Text, useColorModeValue as mode} from "@chakra-ui/react";
 import {formatDate} from "../lib/formatDate";
 
 const BookmarkItem = ({title, excerpt, cover, type, link, created, tags}) => {
@@ -9,7 +8,11 @@ const BookmarkItem = ({title, excerpt, cover, type, link, created, tags}) => {
     return (
         <Box>
             <Link href={link} isExternal={true}>
-                <Image src={cover} fallback={<Skeleton/>} objectFit="cover"/>
+                <Image _hover={{
+                    transform: "translateY(-4px)",
+                    shadow: "sm",
+                    textDecoration: "none",
+                }} src={cover} fallback={<Skeleton/>} objectFit="cover"/>
             </Link>
             {tags && <Box my={2}> {tags.map((tag) => (<Tag key={tag}>{tag}</Tag>))}</Box>}
             <Link href={link} isExternal={true}>
@@ -34,7 +37,7 @@ const Bookmarks = ({bookmarks}) => {
 
             {bookmarks !== null && bookmarks.length > 0
                 ?
-                <SimpleGrid columns={[2, 3]} spacing={4}>
+                <SimpleGrid columns={[1, 2, 3]} spacing={4}>
                     {bookmarks.map((b) => (
                         <BookmarkItem key={b.link} {...b}/>
                     ))}

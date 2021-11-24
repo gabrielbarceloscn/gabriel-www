@@ -6,6 +6,7 @@ import Image from "next/image";
 import slugify from "slugify";
 import {motion} from "framer-motion";
 import {Box, Grid, Heading, Link, LinkOverlay, Text} from "@chakra-ui/react";
+import BookSuggestion from "../components/book-suggestion";
 
 const FinishedBookItem = (props) => {
     const title = props.properties.Title.title[0]?.plain_text;
@@ -31,9 +32,9 @@ const FinishedBookItem = (props) => {
                         height={240}/>
                 </a>
             </motion.div>
-            <Text href={`books/${slug}`} size={"md"} fontWeight={"bold"} mt={2}>
+            <Link href={`books/${slug}`} size={"md"} fontWeight={"bold"} mt={2}>
                 {title}
-            </Text>
+            </Link>
             <Text display={"block"} href={`books/${slug}`} opacity={0.6} mt={2}>
                 {author}
             </Text>
@@ -77,7 +78,11 @@ const Books = ({finishedBooks, unfinishedBooks}) => {
     return (
         <Page>
             <PageHeader title={`Livros finalizados`}
-                        description={`Essa página contém as resenhas de ${finishedBooks.length} livros. Clique no livro para visualizar.`}/>
+                        description={`Essa página contém as resenhas de ${finishedBooks.length} livros. Clique no livro para visualizar.`}>
+                <BookSuggestion/>
+            </PageHeader>
+
+
 
             <Grid templateColumns={["repeat(2, 1fr)", "repeat(3, 1fr)"]} gap={{base: "20px", sm: "40px"}}
                   mb={"50px"}>
