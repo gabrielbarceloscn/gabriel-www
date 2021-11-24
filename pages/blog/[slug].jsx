@@ -36,7 +36,7 @@ const Post = ({meta, blocks}) => {
     const description = meta.properties.Description.rich_text[0]?.plain_text;
 
     const publishedAt = meta.properties.PublishDate?.date.start;
-    const updatedAt = meta.properties.UpdateDate?.date?.start;
+    const updatedAt = meta.last_edited_time;
 
     const link = meta.properties.Link?.url;
     const cover = meta?.cover?.file?.url;

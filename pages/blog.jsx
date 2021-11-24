@@ -13,7 +13,7 @@ const BlogListItem = (props) => {
     const description = props.properties.Description.rich_text[0]?.plain_text;
 
     const publishedAt = props.properties.PublishDate?.date.start;
-    const updatedAt = props.properties.UpdateDate?.date?.start;
+    const updatedAt = props.last_edited_time;
 
     const link = props.properties.Link?.url;
     const cover = props?.cover?.file?.url;
