@@ -1,39 +1,22 @@
-const Airtable = require("airtable");
+export default async function handler(req, res) {
 
-const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
-    process.env.AIRTABLE_BASE_ID
-);
+    const Airtable = require('airtable');
+    const base = new Airtable({apiKey: process.env.AIRTABLE_API_KEY}).base(process.env.AIRTABLE_TABLE_ID);
+    const data = req.body;
 
-export default function handler(req, res) {
-    // Parse stringified json
-    const body = JSON.parse(req.body);
+    base('BookSuggestion').create({
+        "Title": data.title,
+        "Message": data.message,
+        "Author": data.author,
+    }, function(err, record) {
+        if (err) {
+            console.error(err);
 
-    sendSuggestion(body)
-        .then((response) => {
-            res.status(200).json(response);
-        })
-        .catch((error) => {
-            res.status(405).json(error);
-        });
+            res.status(500).json({ message: `Erro ${err}.`});
+            return;
+        }
 
-    function sendSuggestion(data) {
-        const { title, author, message } = data;
-        const table = base("BookSuggestion");
+        res.status(200).json({id: record.getId()});
+    });
 
-        return new Promise((resolve, reject) => {
-            table.create(
-                {
-                    Title: title,
-                    Author: author,
-                    Message: message,
-                },
-                function (err, record) {
-                    if (err) {
-                        reject();
-                    }
-                    resolve();
-                }
-            );
-        });
-    }
 }
