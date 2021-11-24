@@ -10,8 +10,6 @@ import Project from "../components/project";
 
 const projects = [
     { title: 'Caldas Novas App', description: 'O aplicativo oficial de Caldas Novas - GO', link: 'https://caldasnovas.app', image: CnAppBanner },
-    { title: 'Caldas Novas App', description: 'O aplicativo oficial de Caldas Novas - GO', link: 'https://caldasnovas.app', image: CnAppBanner },
-    { title: 'Caldas Novas App', description: 'O aplicativo oficial de Caldas Novas - GO', link: 'https://caldasnovas.app', image: CnAppBanner },
 ]
 
 export default function Home({}) {

@@ -10,6 +10,7 @@ import BookSuggestion from "../components/book-suggestion";
 import React, {Fragment} from "react";
 import Rating from "../components/rating";
 import {format, render, cancel, register} from "timeago.js";
+import {formatDigits} from "../lib/stringUtils";
 
 const BookItem = (props) => {
     const title = props.properties.Title.title[0]?.plain_text;
@@ -96,24 +97,26 @@ const BookItem = (props) => {
                         {author}
                     </Text>
                 </VStack>
+                {finished &&
                 <VStack spacing={0} align="start">
                     <Rating rating={parseInt(rating)}/>
                     {lastReadDate &&
                     <Text fontSize="xs" opacity={0.5}>
-                        {format(lastReadDate, "pt_BR")}
+                        Lido {format(lastReadDate, "pt_BR")}
                     </Text>}
                 </VStack>
+                }
             </VStack>
         </HStack>
     )
 }
 
-const Books = ({finishedBooks, unfinishedBooks}) => {
+const Books = ({finishedBooks, readingNow, waitingToBeRead}) => {
 
     return (
         <Page>
-            <PageHeader title={`Livros finalizados`}
-                        description={`Essa página contém as resenhas de ${finishedBooks.length} livros. Clique no livro para visualizar.`}>
+            <PageHeader title={`Livros`}
+                        description={`Já terminei a leitura e resenha de ${finishedBooks ? formatDigits(finishedBooks.length, 2) : 0} livros. Clique no livro para visualizar.`}>
                 <BookSuggestion/>
             </PageHeader>
 
@@ -123,12 +126,20 @@ const Books = ({finishedBooks, unfinishedBooks}) => {
                 {finishedBooks && finishedBooks.map((obj) => <BookItem finished={true} key={obj.id} {...obj}/>)}
             </Grid>
 
-            <PageHeader title={`Livros na fila`}
-                        description={`Atualmente existem ${unfinishedBooks.length} livros na fila de espera`}/>
+            <PageHeader title={`Lendo agora`}
+                        description={`Atualmente estou lendo ${readingNow ? readingNow.length : 0} livros.`}/>
 
             <Grid templateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)"]} gap={{base: "20px", sm: "40px"}}
                   mb={"50px"}>
-                {unfinishedBooks && unfinishedBooks.map((obj) => <BookItem finished={false} key={obj.id} {...obj}/>)}
+                {readingNow && readingNow.map((obj) => <BookItem finished={false} key={obj.id} {...obj}/>)}
+            </Grid>
+
+            <PageHeader title={`Livros na fila`}
+                        description={`Atualmente existem ${waitingToBeRead ? formatDigits(waitingToBeRead.length, 2) : 0} livros na fila de espera`}/>
+
+            <Grid templateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)"]} gap={{base: "20px", sm: "40px"}}
+                  mb={"50px"}>
+                {waitingToBeRead && waitingToBeRead.map((obj) => <BookItem finished={false} key={obj.id} {...obj}/>)}
             </Grid>
         </Page>
     )
@@ -139,7 +150,8 @@ export async function getStaticProps(context) {
     const postsMeta = await getDatabase(process.env.NOTION_BOOK_DATABASE_ID);
 
     const finished = postsMeta.filter(b => b.properties.Status.select.name === "Done");
-    const notFinished = postsMeta.filter(b => b.properties.Status.select.name !== "Done");
+    const reading = postsMeta.filter(b => b.properties.Status.select.name === "Reading");
+    const waiting = postsMeta.filter(b => b.properties.Status.select.name === "Waiting");
 
 
     if (!postsMeta) {
@@ -152,7 +164,8 @@ export async function getStaticProps(context) {
     return {
         props: {
             finishedBooks: finished,
-            unfinishedBooks: notFinished,
+            readingNow: reading,
+            waitingToBeRead: waiting,
         },
         revalidate: 1,
     }

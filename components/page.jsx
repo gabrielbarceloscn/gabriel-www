@@ -1,3 +1,4 @@
+import {siteConfig} from "../lib/site.config";
 import {Container, Heading, Link, chakra} from "@chakra-ui/react";
 import Header from "./header";
 import PageTransition from "./page-transition";
@@ -28,7 +29,7 @@ const Page = ({children}) => {
                     ))}
                 </ul>
                 {/*<NowPlaying />*/}
-                <p className={styles.copyright}>&copy; Gabriel Barcelos {new Date().getFullYear()}</p>
+                <p className={styles.copyright}>&copy; Gabriel Barcelos {new Date().getFullYear()} - {siteConfig.Version}</p>
             </footer>
         </Container>
     )
