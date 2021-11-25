@@ -31,7 +31,7 @@ const customTheme = extendTheme(
     {
         config: {
             initialColorMode: 'system',
-            useSystemColorMode: false,
+            useSystemColorMode: true,
         },
         colors: {...colors},
         fonts: {
