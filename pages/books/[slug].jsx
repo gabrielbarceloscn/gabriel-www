@@ -9,11 +9,12 @@ import Image from "next/image";
 import styles from "./book.module.scss";
 import {HiLink} from "react-icons/hi";
 import {NotionBlockRender} from "../../components/notion-block-render";
+import {NextSeo} from "next-seo";
 
 const Book = ({meta, blocks}) => {
     const router = useRouter();
     const {slug} = router.query;
-    const { colorMode } = useColorMode();
+    const {colorMode} = useColorMode();
 
     if (router.isFallback) {
         return (
@@ -41,9 +42,32 @@ const Book = ({meta, blocks}) => {
 
     const tagTextColor = colorMode === "light" ? "gray.800" : "white";
 
+    const seoTitle = `${title} - Resenha por Gabriel Barcelos`
+    const seoDesc = `Resenha, anotações e insights do livro ${title} de ${author}`
 
     return (
         <Page>
+            <NextSeo
+                title={seoTitle}
+                description={seoDesc}
+                openGraph={{
+                    title: seoTitle,
+                    url: `https://gabrielbarcelos.com.br/books/${slug}`,
+                    description: seoDesc,
+                    images: [
+                        {
+                            url: cover
+                                ? `${cover}`
+                                : `https://og-image.vercel.app/Resenha%20de%20Livro%20%7C%20Gabriel%20Barcelos.jpeg?theme=light&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fvercel-triangle-black.svg&images=https%3A%2F%2Fgabrielbarcelos.com.br%2Favatar-small.jpg`,
+                            alt: `capa do livro ${title}`,
+                        },
+                    ],
+                    site_name: 'Gabriel Barcelos',
+                }}
+                twitter={{
+                    cardType: 'summary_large_image',
+                }}
+            />
             <Flex direction={["column", "row"]} as={"header"}
                   mb={"40px"} p={"30px"}
                   backgroundColor={"var(--boxBg)"}
@@ -60,7 +84,8 @@ const Book = ({meta, blocks}) => {
                     <Text opacity={0.6} fontSize={"17px"} fontWeight={"500"} mb={"20px"}>{author}</Text>
                     <dl className={styles.metaList}>
                         <dt>Categoria</dt>
-                        <dd>{categoriesNames.map((c) => (<Tag key={c} size={"md"} colorScheme={"brand"} color={tagTextColor}>{c}</Tag>))}</dd>
+                        <dd>{categoriesNames.map((c) => (
+                            <Tag key={c} size={"md"} colorScheme={"brand"} color={tagTextColor}>{c}</Tag>))}</dd>
                     </dl>
                     {link && (
                         <Link href={link} fontSize={"14px"} isExternal={true} display={"inline-flex"}>

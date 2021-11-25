@@ -9,8 +9,9 @@ import PageHeader from "../../components/page-header";
 import {formatDate} from "../../lib/formatDate";
 import {NotionBlockRender} from "../../components/notion-block-render";
 import {Fragment} from "react";
+import {NextSeo} from "next-seo";
 
-const Post = ({meta, blocks}) => {
+const Post = ({meta, blocks, slug}) => {
     const router = useRouter();
 
     if (router.isFallback) {
@@ -43,8 +44,40 @@ const Post = ({meta, blocks}) => {
     const status = meta.properties.Status.select.name;
     const tags = meta.properties.Tags.multi_select?.map(c => c.name);
 
+    const seoTitle = `${title} | Gabriel Barcelos`;
+    const seoDesc = `${description}`
+    const url = `https://gabrielbarcelos.com.br/blog/${slug}`
+
     return (
         <Page>
+            <NextSeo
+                title={seoTitle}
+                description={seoDesc}
+                canonical={url}
+                openGraph={{
+                    title: seoTitle,
+                    url,
+                    description: seoDesc,
+                    images: [
+                        {
+                            url: cover
+                                ? `${cover}`
+                                : `https://og-image.vercel.app/Post%20%7C%20Gabriel%20Barcelos.jpeg?theme=light&md=1&fontSize=100px&images=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fvercel-triangle-black.svg&images=https%3A%2F%2Fgabrielbarcelos.com.br%2Favatar-small.jpg`,
+                            alt: meta.title,
+                        },
+                    ],
+                    site_name: 'Gabriel Barcelos',
+                    type: 'article',
+                    article: {
+                        publishedTime: publishedAt,
+                        modifiedTime: updatedAt,
+                        authors: ['https://gabrielbarcelos.com.br'],
+                    },
+                }}
+                twitter={{
+                    cardType: 'summary_large_image',
+                }}
+            />
             {/*Post image cover wrapper*/}
             {cover && <Box
                     marginLeft={{base: "-15px", sm: "-20px"}}
@@ -132,6 +165,7 @@ export const getStaticProps = async context => {
         props: {
             meta: currentBookMeta,
             blocks: blocksWithChildren,
+            slug
         },
         revalidate: 1,
     }

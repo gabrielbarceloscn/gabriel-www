@@ -5,6 +5,7 @@ import Image from "next/image";
 import {formatDate} from "../lib/formatDate";
 import {getDatabase} from "../lib/notionApi";
 import slugify from "slugify";
+import {NextSeo} from "next-seo";
 
 const BlogListItem = (props) => {
     const title = props.properties.Title.title[0]?.plain_text;
@@ -57,10 +58,24 @@ const BlogListItem = (props) => {
 }
 
 const Blog = ({posts}) => {
-
+    const seoTitle = 'Blog | Gabriel Barcelos';
+    const seoDesc = 'Eu escrevo sobre negócios, marketing, finanças pessoais e compartilho insights sobre temas diversos.';
 
     return (
         <Page>
+            <NextSeo
+                title={seoTitle}
+                description={seoDesc}
+                openGraph={{
+                    title: seoTitle,
+                    url: `https://gabrielbarcelos.com.br/blog/`,
+                    description: seoDesc,
+                    site_name: 'Gabriel Barcelos',
+                }}
+                twitter={{
+                    cardType: 'summary_large_image',
+                }}
+            />
             <PageHeader
                 title={"Blog"}
                 description={"Eu escrevo sobre negócios, marketing, finanças pessoais e compartilho insights sobre temas diversos."}

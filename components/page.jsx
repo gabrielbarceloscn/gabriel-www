@@ -7,6 +7,7 @@ import styles from "./page.module.scss";
 const footerLinks = [
     {name: 'Início', url: '/', isExternal: false},
     {name: 'Instagram', url: 'https://instagram.com/gabrielbarceloscn', isExternal: true},
+    {name: 'Changelog', url: '/changelog'}
 ]
 
 const Page = ({children}) => {

@@ -11,6 +11,7 @@ import React, {Fragment} from "react";
 import Rating from "../components/rating";
 import {format, render, cancel, register} from "timeago.js";
 import {formatDigits} from "../lib/stringUtils";
+import {NextSeo} from "next-seo";
 
 const BookItem = (props) => {
     const title = props.properties.Title.title[0]?.plain_text;
@@ -112,9 +113,24 @@ const BookItem = (props) => {
 }
 
 const Books = ({finishedBooks, readingNow, waitingToBeRead}) => {
+    const seoTitle = 'Leitura | Gabriel Barcelos';
+    const seoDesc = 'Reuni e resenhei os principais livros que li, com anotações que podem te trazer algum insight.'
 
     return (
         <Page>
+            <NextSeo
+                title={seoTitle}
+                description={seoDesc}
+                openGraph={{
+                    title: seoTitle,
+                    url: `https://gabrielbarcelos.com.br/books/`,
+                    description: seoDesc,
+                    site_name: 'Gabriel Barcelos',
+                }}
+                twitter={{
+                    cardType: 'summary_large_image',
+                }}
+            />
             <PageHeader title={`Livros`}
                         description={`Já terminei a leitura e resenha de ${finishedBooks ? formatDigits(finishedBooks.length, 2) : 0} livros. Clique no livro para visualizar.`}>
                 <BookSuggestion/>

@@ -10,7 +10,7 @@ const config = {
         site_name: 'Gabriel Barcelos',
         images: [
             {
-                url: 'https://samuelkraft.com/og.png',
+                url: 'https://gabrielbarcelos.com.br/og.jpg',
                 alt: 'Gabriel Barcelos',
             },
         ],

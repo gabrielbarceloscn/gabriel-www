@@ -24,14 +24,20 @@ const colors = {
         "bgDark": "#161515",
         "textLight": "#000",
         "textDark": "#fff",
+        "borderLight": "rgba(0, 0, 0, 0.08)",
+        "borderDark": "rgba(255, 255, 255, 0.08)",
+        "headerBgLight": "rgba(255, 255, 255, 0.6)",
+        "headerBgDark": "rgba(22, 21, 21, 0.6)",
+        "borderActiveLight" : "rgba(0, 0, 0, 0.25)",
+        "borderActiveDark" : "rgba(255, 255, 255, 0.25)",
     }
 };
 
 const customTheme = extendTheme(
     {
         config: {
-            initialColorMode: 'system',
-            useSystemColorMode: true,
+            initialColorMode: 'dark',
+            useSystemColorMode: false,
         },
         colors: {...colors},
         fonts: {
@@ -43,11 +49,13 @@ const customTheme = extendTheme(
         styles: {
             global: ({colorMode}) => ({
                 ":root": {
-                    "--headerBg": colorMode === "light" ? "rgba(255, 255, 255, 0.6)": "rgba(22, 21, 21, 0.6)",
+                    "--headerBg": colorMode === "light" ? "var(--chakra-colors-template-headerBgLight)": "var(--chakra-colors-template-headerBgDark)",
                     "--boxBg": colorMode === "light" ? "#f3f3f3": "#1f1e1d",
-                    "--border": colorMode === "light"? "rgba(0, 0, 0, 0.08)" : "rgba(255, 255, 255, 0.08)",
+                    "--border": colorMode === "light"? "var(--chakra-colors-template-borderLight)" : "var(--chakra-colors-template-borderDark)",
                     "--text": colorMode === "light" ? "#000": "#fff",
                     "--star": colorMode === "light" ? "#fece02": "#fef102",
+                    "--borderActive": colorMode === "light" ? "var(--chakra-colors-template-borderActiveLight)": "var(--chakra-colors-template-borderActiveDark)",
+                    "--brand": colorMode === "light" ? "rgba(215,204,99,255)": "#fbfaf1",
                 },
                 // styles for the `body`
                 body: {
