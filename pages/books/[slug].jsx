@@ -1,10 +1,9 @@
 import {Fragment} from "react";
-import PageHeader from "../../components/page-header";
 import Page from "../../components/page";
-import {getBlocks, getDatabase, getPage} from "../../lib/notionApi";
+import {getBlocks, getDatabase} from "../../lib/notionApi";
 import slugify from "slugify";
 import {useRouter} from "next/router";
-import {Box, Button, Flex, Heading, Link, Tag, Text, useColorMode} from "@chakra-ui/react";
+import {Box, Flex, Heading, Link, Tag, Text, useColorMode} from "@chakra-ui/react";
 import Image from "next/image";
 import styles from "./book.module.scss";
 import {HiLink} from "react-icons/hi";

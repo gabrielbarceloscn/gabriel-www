@@ -32,7 +32,7 @@ const Bookmarks = ({bookmarks}) => {
         <Page>
             <PageHeader
                 title={"Favoritos"}
-                description={"Artigos, ferramentas, curiosidades, etc. Links podem vir a ser úteis em algum momento. Deixo salvo para não perder de vista."}
+                description={"Artigos, ferramentas, curiosidades, etc. Links podem vir a ser úteis em algum momento."}
             />
 
             {bookmarks !== null && bookmarks.length > 0

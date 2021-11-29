@@ -3,6 +3,7 @@ import PageHeader from "../components/page-header";
 import {Box, Grid, Heading, Link as CLink, Tag, Text} from "@chakra-ui/react";
 import Image from "next/image";
 import {HiLink} from "react-icons/hi";
+import ToolCard from "../components/tool-card";
 
 const Stack = ({items}) => {
     return (
@@ -12,20 +13,14 @@ const Stack = ({items}) => {
                 ?
                 <Grid templateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(3, 1fr)"]} gap={{base: "20px", sm: "40px"}}>
                     {items.map(({Name, Description, Logo, Platform, Link}, idx) => (
-                        <Box key={idx}>
-                            {Logo && <Image src={Logo[0].url} width={64} height={64} alt={Name}/>}
-                            <Heading>{Name} <Tag mt={2}>{Platform}</Tag></Heading>
-
-                            <Text>{Description}</Text>
-                            {Link && (
-                                <CLink href={Link} fontSize={"14px"} isExternal={true} mt={4} display={"inline-flex"}>
-                                    Acessar
-                                    <Box ml={2}>
-                                        <HiLink/>
-                                    </Box>
-                                </CLink>
-                            )}
-                        </Box>
+                        <ToolCard
+                            key={idx}
+                            name={Name}
+                            description={Description}
+                            image={Logo}
+                            platform={Platform}
+                            link={Link}
+                        />
                     ))}
                 </Grid>
                 : <Text>Ainda sem informações.</Text>

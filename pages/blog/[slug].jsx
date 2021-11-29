@@ -10,6 +10,8 @@ import {formatDate} from "../../lib/formatDate";
 import {NotionBlockRender} from "../../components/notion-block-render";
 import {Fragment} from "react";
 import {NextSeo} from "next-seo";
+import cloudinaryCustomLoader from "../../lib/imgCustomLoader";
+
 
 const Post = ({meta, blocks, slug}) => {
     const router = useRouter();
@@ -80,19 +82,19 @@ const Post = ({meta, blocks, slug}) => {
             />
             {/*Post image cover wrapper*/}
             {cover && <Box
-                    marginLeft={{base: "-15px", sm: "-20px"}}
-                    marginRight={{base: "-15px", sm: "-20px"}}
-                    marginBottom={["15px", "30px"]}
-                    marginTop={{base: "-30px"}}
-                    overflow={"hidden"}
-                    border={"1px solid var(--border)"}
-                    borderRadius={{sm: "12px"}}
-                    borderWidth={{sm: "1px"}}
-                    borderRightWidth={0}
-                    borderLeftWidth={0}
-                >
-                    <Image src={cover} alt={"alt"} width={2024} height={1012} layout={"responsive"}/>
-                </Box>}
+                marginLeft={{base: "-15px", sm: "-20px"}}
+                marginRight={{base: "-15px", sm: "-20px"}}
+                marginBottom={["15px", "30px"]}
+                marginTop={{base: "-30px"}}
+                overflow={"hidden"}
+                border={"1px solid var(--border)"}
+                borderRadius={{sm: "12px"}}
+                borderWidth={{sm: "1px"}}
+                borderRightWidth={0}
+                borderLeftWidth={0}
+            >
+                <Image src={cover} loader={cloudinaryCustomLoader} alt={"alt"} width={2024} height={1012} layout={"responsive"}/>
+            </Box>}
             <PageHeader title={title}>
                 <Text fontSize={"0.95em"} opacity={"0.7"}>
                     Publicado em <time dateTime={publishedAt}>{formatDate(publishedAt)}</time> &middot;
@@ -160,6 +162,32 @@ export const getStaticProps = async context => {
         }
         return block;
     });
+
+    // get cover identifier
+    const coverUrl = currentBookMeta?.cover?.file?.url;
+    let coverUrlWithoutParameters = coverUrl.split('?')[0];
+    // console.log(`coverUrlHandled: ${coverUrlWithoutParameters}`);
+
+// configurando cloudinary
+    let cloudinary = require('cloudinary').v2;
+    cloudinary.config({
+        cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME,
+        api_key: process.env.CLOUDINARY_APIKEY,
+        api_secret: process.env.CLOUDINARY_APISECRET
+    });
+
+
+    let coverUrlBase64 = new Buffer(coverUrlWithoutParameters).toString('base64');
+
+    // upload da capa
+    let cloudinaryUploadResponse = await cloudinary.uploader.upload(coverUrl, {
+        public_id: coverUrlBase64,
+        folder: "from-notion",
+        unique_filename: false,
+        ovewrite: false,
+        resource_type: 'image',
+    })
+
 
     return {
         props: {
