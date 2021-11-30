@@ -62,13 +62,11 @@ export const getStaticProps = async context => {
 
     const bookmarks = await res.json();
 
-
     if (!bookmarks) {
         return {
             notFound: true,
         };
     }
-
 
     return {
         props: {

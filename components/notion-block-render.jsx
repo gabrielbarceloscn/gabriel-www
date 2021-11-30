@@ -1,8 +1,9 @@
 import React, {Fragment} from "react";
 import Image from "next/image";
-import {Alert, Box, Button, Divider, Heading, HStack, Link, Text} from "@chakra-ui/react";
+import {Alert, Box, Button, Divider, Heading, HStack, Link, Text, Image as CImage} from "@chakra-ui/react";
 import {FaDownload} from "react-icons/fa";
 import YoutubeEmbed from "./youtube-embed";
+import cloudinaryCustomLoader from "../lib/imgCustomLoader";
 
 export const NotionText = ({text}) => {
     if (!text) {
@@ -23,7 +24,7 @@ export const NotionText = ({text}) => {
         // )
 
         return (
-            <Box display={"inline"} fontWeight={(bold ? "bold" : "normal")}
+            <Box as={"span"} display={"inline"} fontWeight={(bold ? "bold" : "normal")}
                  fontStyle={(italic ? "italic" : "normal")}
                  textDecoration={(strikethrough ? "line-through" : undefined) || (underline ? "underline" : undefined)}
                  key={idx}
@@ -36,40 +37,6 @@ export const NotionText = ({text}) => {
         );
     });
 };
-
-export const NotionImageFile = ({data, alt}) => {
-
-    /*
-        Expected:
-        "cover": {
-            "type": "file",
-            "file": {
-              "url": "https://s3.us-west-2.amazonaws.com/secure.notion-static.com/529c5d26-e39f-4b0c-93af-d42e39ca36dd/150742098_500540104681817_5086441279661538497_n.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211003%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211003T214754Z&X-Amz-Expires=3600&X-Amz-Signature=c8b8fd70f20809a54fbf931faf4086a72a1287342b5f3c7ab529e1590a2f7814&X-Amz-SignedHeaders=host",
-              "expiry_time": "2021-10-03T22:47:54.317Z"
-            }
-          },
-     */
-
-    if (!data || data.type !== "file")
-        return (
-            <></>
-        )
-
-    return (
-        <Box
-            pos="relative"
-            // cursor="pointer"
-            className="group"
-            h={{
-                base: '12rem',
-                md: '30rem',
-            }}
-            overflow="hidden"
-        >
-            <Image src={data.file.url} alt={alt} layout={"fill"}/>
-        </Box>
-    )
-}
 
 export const NotionBlockRender = (block) => {
     const {type, id} = block;
@@ -136,11 +103,17 @@ export const NotionBlockRender = (block) => {
             const src =
                 value.type === "external" ? value.external.url : value.file.url;
             const caption = value.caption ? value.caption[0]?.plain_text : "";
+            if (src === undefined) {
+                return (
+                    <></>
+                )
+            }
+
             return (
-                <figure>
-                    <img src={src} alt={caption}/>
-                    {caption && <figcaption>{caption}</figcaption>}
-                </figure>
+                <>
+                    <CImage src={cloudinaryCustomLoader({src})} alt={caption}/>
+                    {caption && <Text>{caption}</Text>}
+                </>
             );
         case "file":
             const fileCaption = value.caption ? value.caption[0]?.plain_text : "";

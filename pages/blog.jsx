@@ -6,6 +6,7 @@ import {formatDate} from "../lib/formatDate";
 import {getDatabase} from "../lib/notionApi";
 import slugify from "slugify";
 import {NextSeo} from "next-seo";
+import NextLink from 'next/link';
 
 const BlogListItem = (props) => {
     const title = props.properties.Title.title[0]?.plain_text;
@@ -24,7 +25,7 @@ const BlogListItem = (props) => {
     return (
         <Box mb={"4rem"}>
             {/*Post image cover wrapper*/}
-            {cover && <Link href={`/blog/${slug}/`}>
+            {cover && <NextLink href={`/blog/${slug}/`}>
                 <Box
                     marginLeft={{base: "-15px", sm: "-20px"}}
                     marginRight={{base: "-15px", sm: "-20px"}}
@@ -38,7 +39,7 @@ const BlogListItem = (props) => {
                 >
                     <Image src={cover} alt={"alt"} width={2024} height={1012} layout={"responsive"}/>
                 </Box>
-            </Link>}
+            </NextLink>}
             <Link href={`/blog/${slug}/`}
                   display={"block"}
                   marginBottom={"10px"}

@@ -2,7 +2,7 @@ import styles from "./post.module.scss";
 import {getBlocks, getDatabase} from "../../lib/notionApi";
 import slugify from "slugify";
 import Page from "../../components/page";
-import {Box, Text} from "@chakra-ui/react";
+import {Box, Skeleton, Spinner, Stack, Text} from "@chakra-ui/react";
 import Image from "next/image";
 import {useRouter} from "next/router";
 import PageHeader from "../../components/page-header";
@@ -12,14 +12,16 @@ import {Fragment} from "react";
 import {NextSeo} from "next-seo";
 import cloudinaryCustomLoader from "../../lib/imgCustomLoader";
 
-
 const Post = ({meta, blocks, slug}) => {
     const router = useRouter();
 
     if (router.isFallback) {
         return (
             <Page>
-                <Text>Carregando… Aguarde alguns instantes e atualize a página.</Text>
+                <Stack>
+                    <Skeleton height='20px' />
+                    <Text>Carregando...</Text>
+                </Stack>
             </Page>
         )
     }
@@ -93,7 +95,8 @@ const Post = ({meta, blocks, slug}) => {
                 borderRightWidth={0}
                 borderLeftWidth={0}
             >
-                <Image src={cover} loader={cloudinaryCustomLoader} alt={"alt"} width={2024} height={1012} layout={"responsive"}/>
+                <Image src={cover} loader={cloudinaryCustomLoader} alt={"alt"} width={2024} height={1012}
+                       layout={"responsive"}/>
             </Box>}
             <PageHeader title={title}>
                 <Text fontSize={"0.95em"} opacity={"0.7"}>
@@ -125,7 +128,46 @@ export const getStaticPaths = async () => {
     }
 }
 
+const uploadImageToCloudAndGetNewPublicUrl = async (cloudinaryClient, originUrl) => {
+    let cleanUrl = originUrl.split('?')[0];
+    let cleanUrlEncoded = new Buffer(cleanUrl).toString('base64');
+    let cdnUploadResponse = await cloudinaryClient.uploader.upload(originUrl, {
+        "public_id": cleanUrlEncoded,
+        folder: "from-notion",
+        unique_filename: false,
+        ovewrite: false,
+        resource_type: 'image',
+    });
+    return cdnUploadResponse.secure_url;
+}
+
+const handleImageBlock = async (cloudinaryClient, block) => {
+    if (!block)
+        return;
+
+    if (block.type !== "image")
+        return;
+
+    if (block.image.type !== "file")
+        return;
+
+    const originalUrl =
+        block.image.file.url;
+
+    await uploadImageToCloudAndGetNewPublicUrl(cloudinaryClient, originalUrl);
+
+    return;
+}
+
 export const getStaticProps = async context => {
+
+    // Inicializa e configura client do Cloudinary
+    let cloudinary = require("cloudinary").v2;
+    cloudinary.config({
+        cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME,
+        api_key: process.env.CLOUDINARY_APIKEY,
+        api_secret: process.env.CLOUDINARY_APISECRET
+    });
 
     const data = await getDatabase(process.env.NOTION_BLOG_DATABASE_ID);
 
@@ -160,34 +202,20 @@ export const getStaticProps = async context => {
                 (x) => x.id === block.id
             )?.children;
         }
+
+        // se for bloco do tipo imagem, faz upload para o Cloudinary
+        // handleImageBlock(cloudinary, block);
+
         return block;
     });
 
-    // get cover identifier
-    const coverUrl = currentBookMeta?.cover?.file?.url;
-    let coverUrlWithoutParameters = coverUrl.split('?')[0];
-    // console.log(`coverUrlHandled: ${coverUrlWithoutParameters}`);
-
-// configurando cloudinary
-    let cloudinary = require('cloudinary').v2;
-    cloudinary.config({
-        cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME,
-        api_key: process.env.CLOUDINARY_APIKEY,
-        api_secret: process.env.CLOUDINARY_APISECRET
-    });
 
 
-    let coverUrlBase64 = new Buffer(coverUrlWithoutParameters).toString('base64');
+    let coverUrl = currentBookMeta?.cover?.file?.url;
+    if (coverUrl) {
 
-    // upload da capa
-    let cloudinaryUploadResponse = await cloudinary.uploader.upload(coverUrl, {
-        public_id: coverUrlBase64,
-        folder: "from-notion",
-        unique_filename: false,
-        ovewrite: false,
-        resource_type: 'image',
-    })
-
+        currentBookMeta.cover.file.url = await uploadImageToCloudAndGetNewPublicUrl(cloudinary, coverUrl);
+    }
 
     return {
         props: {
