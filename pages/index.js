@@ -14,7 +14,7 @@ const projects = [
 ]
 
 export default function Home({}) {
-    const seoDescription = "Sou um desenvolvedor  &amp; empreendedor. Esse é meu site pessoal, e uso ele como um espaço para compartilhar projetos, leitura dentre outros.";
+    const seoDescription = "Sou um desenvolvedor & empreendedor. Esse é meu site pessoal, e uso ele como um espaço para compartilhar projetos, leitura dentre outros.";
 
     return (
         <Page>
