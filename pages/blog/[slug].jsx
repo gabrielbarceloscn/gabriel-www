@@ -195,6 +195,7 @@ export const getStaticProps = async context => {
                 };
             })
     );
+
     const blocksWithChildren = notionBlocks.map((block) => {
         // Add child blocks if the block should contain children but none exists
         if (block.has_children && !block[block.type].children) {
@@ -208,8 +209,6 @@ export const getStaticProps = async context => {
 
         return block;
     });
-
-
 
     let coverUrl = currentBookMeta?.cover?.file?.url;
     if (coverUrl) {

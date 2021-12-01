@@ -93,9 +93,9 @@ const Blog = ({posts}) => {
 
 export async function getStaticProps(context) {
 
-    const postsMeta = await getDatabase(process.env.NOTION_BLOG_DATABASE_ID);
+    let data = await getDatabase(process.env.NOTION_BLOG_DATABASE_ID);
 
-    const published = postsMeta.filter(b => b.properties.Status?.select?.name === "Published");
+    const published = data.filter(b => b.properties.Status?.select?.name === "Published");
 
     return {
         props: {
