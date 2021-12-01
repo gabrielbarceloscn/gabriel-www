@@ -67,7 +67,7 @@ const ToolCard = ({
                         rounded="md"
                     />
                 </Box>
-                <Link href={link} fontWeight="bold" fontSize="md" noOfLines={2}>
+                <Link href={link} color={["brand", "brand.900"]} fontWeight="bold" fontSize="md" noOfLines={2}>
                     {name}
                 </Link>
 

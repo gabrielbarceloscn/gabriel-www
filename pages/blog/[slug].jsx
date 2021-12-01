@@ -205,7 +205,7 @@ export const getStaticProps = async context => {
         }
 
         // se for bloco do tipo imagem, faz upload para o Cloudinary
-        // handleImageBlock(cloudinary, block);
+        handleImageBlock(cloudinary, block);
 
         return block;
     });

@@ -25,7 +25,7 @@ const BlogListItem = (props) => {
     return (
         <Box mb={"4rem"}>
             {/*Post image cover wrapper*/}
-            {cover && <NextLink href={`/blog/${slug}/`}>
+            {cover && <a href={`/blog/${slug}/`}>
                 <Box
                     marginLeft={{base: "-15px", sm: "-20px"}}
                     marginRight={{base: "-15px", sm: "-20px"}}
@@ -39,7 +39,7 @@ const BlogListItem = (props) => {
                 >
                     <Image src={cover} alt={"alt"} width={2024} height={1012} layout={"responsive"}/>
                 </Box>
-            </NextLink>}
+            </a>}
             <Link href={`/blog/${slug}/`}
                   display={"block"}
                   marginBottom={"10px"}

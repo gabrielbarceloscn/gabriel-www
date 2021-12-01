@@ -4,6 +4,7 @@ import {Alert, Box, Button, Divider, Heading, HStack, Link, Text, Image as CImag
 import {FaDownload} from "react-icons/fa";
 import YoutubeEmbed from "./youtube-embed";
 import cloudinaryCustomLoader from "../lib/imgCustomLoader";
+import {LinkPreview} from "@dhaiwat10/react-link-preview";
 
 export const NotionText = ({text}) => {
     if (!text) {
@@ -148,7 +149,7 @@ export const NotionBlockRender = (block) => {
         case "bookmark":
             const bookmarkUrl = value.url;
             return (
-                <Link href={bookmarkUrl}>{bookmarkUrl}</Link>
+                <LinkPreview url={bookmarkUrl} width={"100%"}/>
             )
         case "divider":
             return (
