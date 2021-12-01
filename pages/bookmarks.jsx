@@ -2,6 +2,7 @@ import Page from "../components/page";
 import PageHeader from "../components/page-header";
 import {Box, Divider, Heading, Image, Link, SimpleGrid, Skeleton, Tag, Text, useColorModeValue as mode} from "@chakra-ui/react";
 import {formatDate} from "../lib/formatDate";
+import {NextSeo} from "next-seo";
 
 const BookmarkItem = ({title, excerpt, cover, type, link, created, tags}) => {
 
@@ -27,12 +28,14 @@ const BookmarkItem = ({title, excerpt, cover, type, link, created, tags}) => {
 }
 
 const Bookmarks = ({bookmarks}) => {
+const seoDescription = "Meus favoritos da internet: artigos, ferramentas, curiosidades, etc."
 
     return (
         <Page>
+            <NextSeo description={seoDescription}/>
             <PageHeader
                 title={"Favoritos"}
-                description={"Artigos, ferramentas, curiosidades, etc. Links podem vir a ser úteis em algum momento."}
+                description={seoDescription}
             />
 
             {bookmarks !== null && bookmarks.length > 0

@@ -7,15 +7,21 @@ import PageHeader from "../components/page-header";
 
 import CnAppBanner from "../public/projects/caldasnovas-app.png";
 import Project from "../components/project";
+import {NextSeo} from "next-seo";
 
 const projects = [
     { title: 'Caldas Novas App', description: 'O aplicativo oficial de Caldas Novas - GO', link: 'https://caldasnovas.app', image: CnAppBanner },
 ]
 
 export default function Home({}) {
+    const seoDescription = "Sou um desenvolvedor  &amp; empreendedor. Esse é meu site pessoal, e uso ele como um espaço para compartilhar projetos, leitura dentre outros.";
+
     return (
         <Page>
-            <PageHeader title={"Olá, me chamo Gabriel."} description="Sou um desenvolvedor  &amp; empreendedor. Esse é meu site pessoal, e uso ele como um espaço para armazenar informações importantes."/>
+            <NextSeo
+                description={seoDescription}
+                />
+            <PageHeader title={"Olá, me chamo Gabriel."} description={seoDescription}/>
             <Heading as="h3" size="lg">Projetos</Heading>
             {projects.map(proj => (
                 <Project key={proj.title} {...proj}/>

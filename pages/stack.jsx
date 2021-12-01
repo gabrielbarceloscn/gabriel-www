@@ -4,11 +4,15 @@ import {Box, Grid, Heading, Link as CLink, Tag, Text} from "@chakra-ui/react";
 import Image from "next/image";
 import {HiLink} from "react-icons/hi";
 import ToolCard from "../components/tool-card";
+import {NextSeo} from "next-seo";
 
 const Stack = ({items}) => {
+    const seoDescription = "Ferramentas que uso no dia-a-dia.";
+
     return (
         <Page>
-            <PageHeader title={"Stack"} description={"Todas as ferramentas que uso pra produzir."}/>
+            <NextSeo description={seoDescription}/>
+            <PageHeader title={"Stack"} description={seoDescription}/>
             {items
                 ?
                 <Grid templateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)", "repeat(3, 1fr)"]} gap={{base: "20px", sm: "40px"}}>
