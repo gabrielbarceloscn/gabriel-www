@@ -6,7 +6,7 @@ import {formatDate} from "../lib/formatDate";
 import {getDatabase} from "../lib/notionApi";
 import slugify from "slugify";
 import {NextSeo} from "next-seo";
-import NextLink from 'next/link';
+import cloudinaryCustomLoader from "../lib/imgCustomLoader";
 
 const BlogListItem = (props) => {
     const title = props.properties.Title.title[0]?.plain_text;
@@ -37,7 +37,7 @@ const BlogListItem = (props) => {
                     borderRightWidth={0}
                     borderLeftWidth={0}
                 >
-                    <Image src={cover} alt={"alt"} width={2024} height={1012} layout={"responsive"}/>
+                    <Image src={cover} loader={cloudinaryCustomLoader} alt={"alt"} width={2024} height={1012} layout={"responsive"}/>
                 </Box>
             </a>}
             <Link href={`/blog/${slug}/`}
