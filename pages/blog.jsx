@@ -2,7 +2,7 @@ import Page from "../components/page";
 import PageHeader from "../components/page-header";
 import {Box, Link, Text} from "@chakra-ui/react";
 import Image from "next/image";
-import { Image as CImage } from "@chakra-ui/react";
+import {Image as CImage} from "@chakra-ui/react";
 import {formatDate} from "../lib/formatDate";
 import {getDatabase} from "../lib/notionApi";
 import slugify from "slugify";
@@ -18,6 +18,7 @@ const BlogListItem = (props) => {
     const publishedAt = props.properties.PublishDate?.date.start;
     const updatedAt = props.last_edited_time;
 
+    const pinned = props.pinned;
     const link = props.properties.Link?.url;
     const cover = props?.cover?.file?.url || props?.cover?.external?.url;
     const status = props.properties.Status.select.name;
@@ -38,7 +39,8 @@ const BlogListItem = (props) => {
                     borderRightWidth={0}
                     borderLeftWidth={0}
                 >
-                    <Image src={cover} loader={cloudinaryCustomLoader} alt={"alt"} width={2024} height={1012} layout={"responsive"}/>
+                    <Image src={cover} loader={cloudinaryCustomLoader} alt={"alt"} width={2024} height={1012}
+                           layout={"responsive"}/>
                     {/*<CImage src={cover} />*/}
                 </Box>
             </a>}
@@ -49,7 +51,7 @@ const BlogListItem = (props) => {
                   fontWeight={"700"}
                   fontSize={["20px", "22px"]}
             >
-                {title}
+                {pinned ? "📍 " : ""} {title}
             </Link>
             <Text mb={"10px"} fontSize={["16px", "18px"]} opacity={"0.7"}>{description}</Text>
             <Text fontSize={"0.95em"} opacity={"0.5"}>
@@ -60,7 +62,7 @@ const BlogListItem = (props) => {
     )
 }
 
-const Blog = ({posts}) => {
+const Blog = ({posts, pinned}) => {
     const seoTitle = 'Blog | Gabriel Barcelos';
     const seoDesc = 'Eu escrevo sobre negócios, marketing, finanças pessoais e compartilho insights sobre temas diversos.';
 
@@ -85,6 +87,11 @@ const Blog = ({posts}) => {
             />
 
             {
+                pinned
+                    ? pinned.map((p) => (<BlogListItem key={p.id} {...p} pinned={true}/>))
+                    : null
+            }
+            {
                 posts
                     ? posts.map((p) => (<BlogListItem key={p.id} {...p}/>))
                     : <Text>Nenhum post encontrado.</Text>
@@ -107,25 +114,43 @@ const uploadImageToCloudAndGetNewPublicUrl = async (cloudinaryClient, originUrl)
 }
 
 export async function getStaticProps() {
+    // Inicializa e configura client do Cloudinary
+    let cloudinary = require("cloudinary").v2;
+    cloudinary.config({
+        cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME,
+        api_key: process.env.CLOUDINARY_APIKEY,
+        api_secret: process.env.CLOUDINARY_APISECRET
+    });
 
     let data = await getDatabase(process.env.NOTION_BLOG_DATABASE_ID);
 
-    const published = data.filter(b => b.properties.Status?.select?.name === "Published");
+    // faz upload das capas de posts pro cloudinary
+    data.map((postMeta) => {
+        // fazer upload da cover pro cloudinary
+        const coverUrl = postMeta?.cover?.file?.url;
+        if (coverUrl)
+            uploadImageToCloudAndGetNewPublicUrl(cloudinary, coverUrl);
 
-    // // Inicializa e configura client do Cloudinary
-    // let cloudinary = require("cloudinary").v2;
-    // cloudinary.config({
-    //     cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME,
-    //     api_key: process.env.CLOUDINARY_APIKEY,
-    //     api_secret: process.env.CLOUDINARY_APISECRET
-    // });
-    //
-    //
+        // retornar mesmo objeto
+        return postMeta;
+    });
+
+    const currentDateTime = Date.now();
+    const published = data.filter(b =>
+        b.properties.Status?.select?.name === "Published"
+        && new Date(b.properties.PublishDate?.date.start) <= currentDateTime
+        && b.properties.Pinned.checkbox !== true
+    );
+    const pinned = data.filter(b =>
+        b.properties.Pinned.checkbox === true
+        && new Date(b.properties.PublishDate?.date.start) <= currentDateTime
+    );
 
 
     return {
         props: {
             posts: published,
+            pinned,
         },
         revalidate: 1,
     }
