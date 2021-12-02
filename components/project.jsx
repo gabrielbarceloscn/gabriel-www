@@ -28,7 +28,8 @@ const Project = ({title, description, link, image, linkText, priority}) => {
                             padding={"25px"}
                             pb={0}
                         >
-                            <Image className={styles.image} src={image} alt={`${description}`} layout="responsive"/>
+                            <Image className={styles.image} src={image} alt={`${description}`} layout="responsive"
+                            priority={true}/>
                         </Flex>
                     )}
                 </Box>
