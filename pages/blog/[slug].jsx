@@ -44,7 +44,7 @@ const Post = ({meta, blocks, slug}) => {
     const updatedAt = meta.last_edited_time;
 
     const link = meta.properties.Link?.url;
-    const cover = meta?.cover?.file?.url;
+    const cover = meta?.cover?.file?.url || meta?.cover?.external?.url;
     const status = meta.properties.Status.select.name;
     const tags = meta.properties.Tags.multi_select?.map(c => c.name);
 

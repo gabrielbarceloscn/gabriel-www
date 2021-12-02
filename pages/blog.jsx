@@ -2,6 +2,7 @@ import Page from "../components/page";
 import PageHeader from "../components/page-header";
 import {Box, Link, Text} from "@chakra-ui/react";
 import Image from "next/image";
+import { Image as CImage } from "@chakra-ui/react";
 import {formatDate} from "../lib/formatDate";
 import {getDatabase} from "../lib/notionApi";
 import slugify from "slugify";
@@ -18,7 +19,7 @@ const BlogListItem = (props) => {
     const updatedAt = props.last_edited_time;
 
     const link = props.properties.Link?.url;
-    const cover = props?.cover?.file?.url;
+    const cover = props?.cover?.file?.url || props?.cover?.external?.url;
     const status = props.properties.Status.select.name;
     const tags = props.properties.Tags.multi_select?.map(c => c.name);
 
@@ -38,6 +39,7 @@ const BlogListItem = (props) => {
                     borderLeftWidth={0}
                 >
                     <Image src={cover} loader={cloudinaryCustomLoader} alt={"alt"} width={2024} height={1012} layout={"responsive"}/>
+                    {/*<CImage src={cover} />*/}
                 </Box>
             </a>}
             <Link href={`/blog/${slug}/`}
@@ -91,11 +93,35 @@ const Blog = ({posts}) => {
     )
 }
 
-export async function getStaticProps(context) {
+const uploadImageToCloudAndGetNewPublicUrl = async (cloudinaryClient, originUrl) => {
+    let cleanUrl = originUrl.split('?')[0];
+    let cleanUrlEncoded = new Buffer(cleanUrl).toString('base64');
+    let cdnUploadResponse = await cloudinaryClient.uploader.upload(originUrl, {
+        "public_id": cleanUrlEncoded,
+        folder: "from-notion",
+        unique_filename: false,
+        ovewrite: false,
+        resource_type: 'image',
+    });
+    return cdnUploadResponse.secure_url;
+}
+
+export async function getStaticProps() {
 
     let data = await getDatabase(process.env.NOTION_BLOG_DATABASE_ID);
 
     const published = data.filter(b => b.properties.Status?.select?.name === "Published");
+
+    // // Inicializa e configura client do Cloudinary
+    // let cloudinary = require("cloudinary").v2;
+    // cloudinary.config({
+    //     cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME,
+    //     api_key: process.env.CLOUDINARY_APIKEY,
+    //     api_secret: process.env.CLOUDINARY_APISECRET
+    // });
+    //
+    //
+
 
     return {
         props: {
