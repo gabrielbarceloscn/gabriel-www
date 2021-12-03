@@ -12,6 +12,8 @@ import Rating from "../components/rating";
 import {format, render, cancel, register} from "timeago.js";
 import {formatDigits} from "../lib/stringUtils";
 import {NextSeo} from "next-seo";
+import {uploadImageToCloudAndGetNewPublicUrl} from "../lib/cloudinary";
+import cloudinaryCustomLoader from "../lib/imgCustomLoader";
 
 const BookItem = (props) => {
     const title = props.properties.Title.title[0]?.plain_text;
@@ -72,6 +74,7 @@ const BookItem = (props) => {
                 <LinkOrFragment isFinished={finished} slug={slug}>
                     <Image
                         src={cover || "https://via.placeholder.com/160x240?text=Capa+indisponivel"}
+                        loader={cloudinaryCustomLoader}
                         height={96}
                         width={60}
                         layout="responsive"
@@ -165,6 +168,22 @@ export async function getStaticProps(context) {
 
     const postsMeta = await getDatabase(process.env.NOTION_BOOK_DATABASE_ID);
 
+    // Inicializa e configura client do Cloudinary
+    let cloudinary = require("cloudinary").v2;
+    cloudinary.config({
+        cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME,
+        api_key: process.env.CLOUDINARY_APIKEY,
+        api_secret: process.env.CLOUDINARY_APISECRET
+    });
+
+    // faz upload das capas de livros pro cloudinary
+    postsMeta.map((bookMeta) => {
+        // fazer upload da cover pro cloudinary
+        const coverUrl = bookMeta.properties.Image?.files[0]?.file?.url
+        if (coverUrl)
+            uploadImageToCloudAndGetNewPublicUrl(cloudinary, coverUrl);
+    });
+
     const finished = postsMeta.filter(b => b.properties.Status.select.name === "Done");
     const reading = postsMeta.filter(b => b.properties.Status.select.name === "Reading");
     const waiting = postsMeta.filter(b => b.properties.Status.select.name === "Waiting");
@@ -175,7 +194,6 @@ export async function getStaticProps(context) {
             notFound: true,
         }
     }
-
 
     return {
         props: {

@@ -8,6 +8,7 @@ import {getDatabase} from "../lib/notionApi";
 import slugify from "slugify";
 import {NextSeo} from "next-seo";
 import cloudinaryCustomLoader from "../lib/imgCustomLoader";
+import {uploadImageToCloudAndGetNewPublicUrl} from "../lib/cloudinary";
 
 const BlogListItem = (props) => {
     const title = props.properties.Title.title[0]?.plain_text;
@@ -98,19 +99,6 @@ const Blog = ({posts, pinned}) => {
             }
         </Page>
     )
-}
-
-const uploadImageToCloudAndGetNewPublicUrl = async (cloudinaryClient, originUrl) => {
-    let cleanUrl = originUrl.split('?')[0];
-    let cleanUrlEncoded = new Buffer(cleanUrl).toString('base64');
-    let cdnUploadResponse = await cloudinaryClient.uploader.upload(originUrl, {
-        "public_id": cleanUrlEncoded,
-        folder: "from-notion",
-        unique_filename: false,
-        ovewrite: false,
-        resource_type: 'image',
-    });
-    return cdnUploadResponse.secure_url;
 }
 
 export async function getStaticProps() {
