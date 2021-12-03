@@ -11,6 +11,7 @@ import {NotionBlockRender} from "../../components/notion-block-render";
 import {Fragment} from "react";
 import {NextSeo} from "next-seo";
 import cloudinaryCustomLoader from "../../lib/imgCustomLoader";
+import {uploadImageToCloudAndGetNewPublicUrl} from "../../lib/cloudinary";
 
 const Post = ({meta, blocks, slug}) => {
     const router = useRouter();
@@ -126,19 +127,6 @@ export const getStaticPaths = async () => {
         paths,
         fallback: true,
     }
-}
-
-const uploadImageToCloudAndGetNewPublicUrl = async (cloudinaryClient, originUrl) => {
-    let cleanUrl = originUrl.split('?')[0];
-    let cleanUrlEncoded = new Buffer(cleanUrl).toString('base64');
-    let cdnUploadResponse = await cloudinaryClient.uploader.upload(originUrl, {
-        "public_id": cleanUrlEncoded,
-        folder: "from-notion",
-        unique_filename: false,
-        ovewrite: false,
-        resource_type: 'image',
-    });
-    return cdnUploadResponse.secure_url;
 }
 
 const handleImageBlock = async (cloudinaryClient, block) => {
