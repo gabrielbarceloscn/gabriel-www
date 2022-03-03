@@ -1,7 +1,20 @@
 import React, {Fragment} from "react";
 import Image from "next/image";
-import {Alert, Box, Button, Divider, Heading, HStack, Link, Text, Image as CImage} from "@chakra-ui/react";
-import {FaDownload} from "react-icons/fa";
+import {
+    Alert,
+    Box,
+    Button,
+    Divider,
+    Heading,
+    HStack,
+    Link,
+    Text,
+    Image as CImage,
+    Stack,
+    Center,
+    useColorModeValue as mode
+} from "@chakra-ui/react";
+import {FaDownload, FaQuoteLeft} from "react-icons/fa";
 import YoutubeEmbed from "./youtube-embed";
 import cloudinaryCustomLoader from "../lib/imgCustomLoader";
 import {LinkPreview} from "@dhaiwat10/react-link-preview";
@@ -161,6 +174,20 @@ export const NotionBlockRender = (block) => {
                 <Alert colorScheme={"gray"}>
                     {calloutText}
                 </Alert>
+            )
+        case "quote":
+            const quoteText = value.text[0].plain_text;
+            return(
+                <Stack direction="row" w="100%" spacing="6">
+                    <Center aria-hidden flexShrink={0} w="12" h="12" rounded="md" color="white" bg="gray.500">
+                        <FaQuoteLeft/>
+                    </Center>
+                    <Stack>
+                        <Text pr="6" color={mode('gray.600', 'gray.400')} lineHeight="tall">
+                            {quoteText}
+                        </Text>
+                    </Stack>
+                </Stack>
             )
         case "unsupported":
             const isImageFile = block?.image?.type === "file";
