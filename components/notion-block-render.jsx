@@ -179,9 +179,10 @@ export const NotionBlockRender = (block) => {
             const quoteText = value.text[0].plain_text;
             return(
                 <Stack direction="row" w="100%" spacing="6">
-                    <Center aria-hidden flexShrink={0} w="12" h="12" rounded="md" color="white" bg="gray.500">
-                        <FaQuoteLeft/>
-                    </Center>
+                    {/*<Center aria-hidden flexShrink={0} w="12" h="12" rounded="md" color="white" bg="gray.500">*/}
+                    {/*    <FaQuoteLeft/>*/}
+                    {/*</Center>*/}
+                    <Box bg={"gray.500"} mr={2} minW={3} color={"gray.500"}/>
                     <Stack>
                         <Text pr="6" color={mode('gray.600', 'gray.400')} lineHeight="tall">
                             {quoteText}
