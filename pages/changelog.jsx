@@ -55,6 +55,13 @@ const Changelog = () => {
                 description={"Histórico de alterações"}
             />
             <section className={styles.section}>
+                <Entry date="2022/03/03" title="Melhorias">
+                    <p>
+                        Corrigida renderização de `quotes`: citações.
+                    </p>
+                </Entry>
+            </section>
+            <section className={styles.section}>
                 <Entry date="2021/11/25" title="⚡️ Publicação definitiva!">
                     <p>Esse site usa a seguinte stack:</p>
                     <ul>
