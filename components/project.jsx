@@ -11,7 +11,7 @@ const Project = ({title, description, link, image, linkText, priority}) => {
         <Box w="100%" mb={["40px", "75px"]} mt={"10px"}>
             <Link href={link} isExternal={true}>
                 <Box position={"relative"} mb={"20px"} pb={"50%"} overflow={"hidden"}
-                     backgroundColor={"var(--chakra-colors-brand-50)"}
+                     backgroundColor={"var(--chakra-colors-brand-100)"}
                      borderRadius={"15px"}
                      h={460}
                      mr={{lg: "-25px"}} ml={{lg: "-25px"}}
