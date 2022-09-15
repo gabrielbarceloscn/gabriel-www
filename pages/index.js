@@ -5,7 +5,7 @@ import Header from "../components/header";
 import Page from "../components/page";
 import PageHeader from "../components/page-header";
 
-import CnAppBanner from "../public/projects/caldasnovas-app.png";
+import CnAppBanner from "../public/projects/caldasnovas-app-v2.png";
 import Project from "../components/project";
 import {NextSeo} from "next-seo";
 
